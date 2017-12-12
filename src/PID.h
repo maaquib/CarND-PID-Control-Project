@@ -1,7 +1,27 @@
 #ifndef PID_H
 #define PID_H
 
+#include <vector>
+
 class PID {
+private:
+  enum PIDRunState { init, first, second };
+  void Twiddle();
+  void TuneParam(int index, double val);
+  PIDRunState state;
+
+  /*
+   * Twiddle params
+   */
+  bool twiddle;
+  double best_err;
+  double err;
+  int param_idx;
+  int update_iters;
+  int evaluate_iters;
+  int initial_steps;
+  std::vector<double> dp;
+
 public:
   /*
   * Errors
