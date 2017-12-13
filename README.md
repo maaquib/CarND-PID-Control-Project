@@ -1,5 +1,19 @@
-# CarND-Controls-PID
+# CarND-Controls-PID ![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)
 Self-Driving Car Engineer Nanodegree Program
+
+---
+
+## Reflection
+* Describe the effect each of the P, I, D components had in your implementation
+
+  * **P** : The "P" or **proportional control parameter** depends only on the current Cross Track Error (CTE) measurement. It causes the car to steer in the direction which, based on the current CTE measurement, would decrease the future CTE. With respect to the current project, the steering angle would have a larger predicted right/left steer value if the vehicle is far left/right from the track center and lower if it is closer
+  * **I** : The "I" or the **integral control parameter** allows the system to adjust for biases in the CTE measurement over time. This term keeps track of the cumulative CTE and adjusts the steer to center the vehicle over a period of time thereby countering any system biases. With respect to the current project, it prevents the CTE measurement biases, if any, from getting to the center of the track lane
+  * **D** : The "D" or the differential control parameter tracks the change in the CTE to prevent oscillations around the center of the lane. With respect to the current project, this term makes the car counter steer when it starts getting close to the center of the track lane and makes the transition to the center more graceful
+
+* Describe how the final hyperparameters were chosen
+  * **Manual Tuning** : For the first iteration I started with values `[Kp, Ki, Kd] = [1, 1, 1]` and did manual tuning. After observing the driving behavior, I scaled the parameter values up/down by a factor of 10 until I reached my initial stable values of `[Kp, Ki, Kd] = [0.1, 0.0001, 1]` which allowed the vehicle to complete the track driving within the track area for most part but with large oscillations
+  * **Twiddle Coarse Tuning** : For the second round of hyperparameter coarse tuning, I implemented the twiddle algorithm as explained in the lessons. I allowed the vehicle to settle in for 100 time steps, tweaked one of the `Kp, Ki, Kd` and then evaluated it after every 1000 time steps and repeated the process for other hyperparameters with the vehicle driving for several laps
+  * **Twiddle Fine Tuning** : After I had stable values for the hyperparameters which allowed the vehicle to traverse the course without going off the tracks and wavering extensively, I then tuned each hyperparameter individually driving 3 laps, stopping the simulator and changing the hyperparameter to tune. I finally arrived at `[Kp, Ki, Kd] = [0.160066, 0.00033004, 4.23017]` which steer the car across the track without going off track or on ledges
 
 ---
 
@@ -19,7 +33,7 @@ Self-Driving Car Engineer Nanodegree Program
   * Run either `./install-mac.sh` or `./install-ubuntu.sh`.
   * If you install from source, checkout to commit `e94b6e1`, i.e.
     ```
-    git clone https://github.com/uWebSockets/uWebSockets 
+    git clone https://github.com/uWebSockets/uWebSockets
     cd uWebSockets
     git checkout e94b6e1
     ```
@@ -33,7 +47,7 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-4. Run it: `./pid`. 
+4. Run it: `./pid`.
 
 Tips for setting up your environment can be found [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
 
@@ -95,4 +109,3 @@ still be compilable with cmake and make./
 
 ## How to write a README
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
